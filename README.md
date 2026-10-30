@@ -1,6 +1,6 @@
 # Aplikasi Katalog Part Motor - Tugas Praktikum PBB
 
-Aplikasi katalog novel berbasis Flutter dengan antarmuka bertema warna pastel, mendukung pencarian produk, serta dilengkapi halaman detail produk.
+Aplikasi katalog part motor berbasis Flutter dengan antarmuka bertema warna pastel, mendukung pencarian produk, serta dilengkapi halaman detail produk.
 
 ## Identitas Mahasiswa
 - **Nama**: Aqeela Hilmana Rabbani

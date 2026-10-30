@@ -1,60 +1,56 @@
 import 'package:flutter/material.dart';
 import '../models/product.dart';
-import '../theme/app_colors.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
   final VoidCallback onTap;
-  final Color cardColor; // Parameter baru untuk warna kartu
 
-  const ProductCard({
-    super.key, 
-    required this.product, 
-    required this.onTap,
-    required this.cardColor,
-  });
+  const ProductCard({super.key, required this.product, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Card(
-        color: cardColor, // Menggunakan warna dari parameter
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
+      child: Container(
+        decoration: BoxDecoration(
+          color: const Color(0xFFFFF5E4),
+          borderRadius: BorderRadius.circular(16),
         ),
-        elevation: 2,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
               child: ClipRRect(
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
                 child: Image.network(
                   product.thumbnail,
                   width: double.infinity,
                   fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) =>
+                      const Center(child: Icon(Icons.two_wheeler, size: 40, color: Colors.grey)),
                 ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(12.0),
+              padding: const EdgeInsets.all(10.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
+                    product.brand,
+                    style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.teal),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
                     product.title,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    '\$${product.price}',
-                    style: const TextStyle(
-                      color: AppColors.text,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    '\$${product.price.toStringAsFixed(2)}',
+                    style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.black87),
                   ),
                 ],
               ),

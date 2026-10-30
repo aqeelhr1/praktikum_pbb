@@ -1,12 +1,9 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import '../models/product.dart';
 import '../services/api_service.dart';
-import '../theme/app_colors.dart';
-import 'detail_screen.dart';
 import 'product_card.dart';
 import 'search_field.dart';
-import 'state_views.dart';
+import 'detail_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,123 +13,85 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final TextEditingController _controller = TextEditingController();
-  Timer? _debounce;
-  List<Product> _products = [];
-  bool _isLoading = true;
-  String? _error;
-  final ApiService _api = ApiService();
+  final ApiService _apiService = ApiService();
+  List<Product> displayedParts = [];
+  bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _loadProducts();
+    _loadData();
   }
 
-  @override
-  void dispose() {
-    _debounce?.cancel();
-    _controller.dispose();
-    super.dispose();
-  }
-
-  Future<void> _loadProducts() async {
+  void _loadData() async {
+    final parts = await _apiService.getProducts();
     setState(() {
-      _isLoading = true;
-      _error = null;
+      displayedParts = parts;
+      isLoading = false;
     });
-    try {
-      final result = await _api.getProducts();
-      if (!mounted) return;
-      setState(() {
-        _products = result;
-        _isLoading = false;
-      });
-    } catch (e) {
-      if (!mounted) return;
-      setState(() {
-        _error = 'Gagal memuat produk';
-        _isLoading = false;
-      });
-    }
   }
 
-  void _onSearchChanged(String query) {
-    _debounce?.cancel();
-    _debounce = Timer(const Duration(milliseconds: 400), () async {
-      if (query.trim().isEmpty) {
-        _loadProducts();
-        return;
-      }
-      
-      if (!mounted) return; 
-      setState(() {
-        _isLoading = true;
-        _error = null;
-      });
-      
-      try {
-        final result = await _api.searchProducts(query.trim());
-        if (!mounted) return;
-        setState(() {
-          _products = result;
-          _isLoading = false;
-        });
-      } catch (e) {
-        if (!mounted) return;
-        setState(() {
-          _error = 'Gagal mencari produk';
-          _isLoading = false;
-        });
-      }
+  void _onSearchChanged(String query) async {
+    setState(() {
+      isLoading = true;
+    });
+    final results = await _apiService.searchProducts(query);
+    setState(() {
+      displayedParts = results;
+      isLoading = false;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Katalog Novel')),
-      body: Column(
-        children: [
-          SearchField(controller: _controller, onChanged: _onSearchChanged),
-          Expanded(child: _buildBody()),
-        ],
+      backgroundColor: const Color(0xFFF7F5F0),
+      appBar: AppBar(
+        title: const Text(
+          'Katalog Part Motor',
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black87),
+        ),
+        backgroundColor: const Color(0xFFB5EAD7),
+        elevation: 0,
       ),
-    );
-  }
-
-  Widget _buildBody() {
-    if (_isLoading) return const LoadingView();
-    if (_error != null) return ErrorView(message: _error!, onRetry: _loadProducts);
-    if (_products.isEmpty) return const EmptyView();
-
-    return GridView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 0.75,
-        crossAxisSpacing: 16,
-        mainAxisSpacing: 16,
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            SearchField(onChanged: _onSearchChanged),
+            const SizedBox(height: 16),
+            Expanded(
+              child: isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : displayedParts.isEmpty
+                      ? const Center(child: Text('Part motor tidak ditemukan'))
+                      : GridView.builder(
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio: 0.7,
+                            crossAxisSpacing: 12,
+                            mainAxisSpacing: 12,
+                          ),
+                          itemCount: displayedParts.length,
+                          itemBuilder: (context, index) {
+                            final product = displayedParts[index];
+                            return ProductCard(
+                              product: product,
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DetailScreen(product: product),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        ),
+            ),
+          ],
+        ),
       ),
-      itemCount: _products.length,
-      itemBuilder: (context, index) {
-        final product = _products[index];
-        // Memilih warna pastel secara berurutan berdasarkan nomor index
-        final color = AppColors.pastelCards[index % AppColors.pastelCards.length];
-        
-        return ProductCard(
-          product: product,
-          cardColor: color, // Mengirim warna ke dalam kartu
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => DetailScreen(product: product),
-              ),
-            );
-          },
-        );
-      },
     );
   }
 }

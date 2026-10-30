@@ -2,85 +2,67 @@ import 'dart:async';
 import '../models/product.dart';
 
 class ApiService {
-  final List<Product> _mockBooks = [
+  final List<Product> _mockParts = [
     Product(
       id: 1,
-      title: 'Bumi Manusia',
-      description: 'Kisah Minke dan Annelies di masa kolonial Belanda. Karya epik Pramoedya Ananta Toer yang membahas ketidakadilan dan perjuangan.',
-      price: 12.50,
-      // Menggunakan server Wikipedia (bebas blokir)
-      thumbnail: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEisLpcB_wbTE67RyzS3sd7px_W-KHwjRzKRa_uYJ1r1H54NCPBIWAL2WCZk9nIOvjjcU_tlszDuZRp0EyysAc9cMxMIj9XoD3iBy-09xtG3yiqgMHvg9gqz2tydudAwNZKDJ8dTdJnzfyc/s1600/1398034._UY1600_SS1600_.jpg',
-      category: 'Novel Indonesia',
+      title: 'Knalpot Racing Full System',
+      brand: 'Akrapovic',
+      description: 'Knalpot berbahan stainless steel anti karat dengan karakter suara bulat bass.',
+      price: 120.00,
+      thumbnail: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCU447V-JqyWPvznIYi8u1OanMqPNuTqz8PeYmPFRJ9g&s=10',
+      category: 'Knalpot & Performa',
     ),
     Product(
       id: 2,
-      title: 'The Great Gatsby',
-      description: 'A story of the wealthy Jay Gatsby and his love for the beautiful Daisy Buchanan. A classic critique of the American Dream.',
-      price: 15.00,
-      thumbnail: 'https://upload.wikimedia.org/wikipedia/commons/7/7a/The_Great_Gatsby_Cover_1925_Retouched.jpg',
-      category: 'English Novel',
+      title: 'Master Rem Tabung Terpisah',
+      brand: 'Brembo',
+      description: 'Master rem pengereman lebih pakem dan responsif. Cocok untuk penggunaan harian maupun balap.',
+      price: 85.50,
+      thumbnail: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQio1fLCqoLehlH8s10F71zAVMgANf4wd0KYX27lPLzHA&s=10',
+      category: 'Sistem Pengereman',
     ),
     Product(
       id: 3,
-      title: 'Laskar Pelangi',
-      description: 'Perjuangan 10 anak desa di Belitung untuk mendapatkan pendidikan yang layak. Kisah inspiratif dan mengharukan karya Andrea Hirata.',
-      price: 10.00,
-      thumbnail: 'https://upload.wikimedia.org/wikipedia/id/8/8e/Laskar_pelangi_sampul.jpg',
-      category: 'Novel Indonesia',
+      title: 'Shockbreaker Tabung Atas 330mm',
+      brand: 'YSS',
+      description: 'Suspensi empuk dengan fitur setelan preload yang bisa disesuaikan dengan beban berkendara.',
+      price: 95.00,
+      thumbnail: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsZpZLwD3RngAwILcs512AxAH1D3R4L7WZx5V9o9xhlQ&s=10',
+      category: 'Suspensi',
     ),
     Product(
       id: 4,
-      title: 'To Kill a Mockingbird',
-      description: 'Compassionate, dramatic, and deeply moving tale of a lawyer in the American South defending an innocent man.',
-      price: 14.20,
-      thumbnail: 'https://upload.wikimedia.org/wikipedia/commons/4/4f/To_Kill_a_Mockingbird_%28first_edition_cover%29.jpg',
-      category: 'English Novel',
+      title: 'Kaliper Rem 4 Piston',
+      brand: 'RCB',
+      description: 'Kaliper rem berbahan alumunium CNC presisi tinggi untuk daya cengkeram rem maksimal.',
+      price: 65.00,
+      thumbnail: 'https://www.hondacengkareng.com/wp-content/uploads/2018/08/Caliper-Sub-Assy-L-FR-45150KZZ902-600x600.jpg',
+      category: 'Sistem Pengereman',
     ),
     Product(
       id: 5,
-      title: 'Cantik Itu Luka',
-      description: 'Kisah keluarga yang dipenuhi tragedi dan sejarah panjang Indonesia yang dibalut realisme magis. Karya Eka Kurniawan.',
-      price: 16.50,
-      thumbnail: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=500&q=80',
-      category: 'Novel Indonesia',
-    ),
-    Product(
-      id: 6,
-      title: '1984',
-      description: 'A dystopian social science fiction novel and cautionary tale about the dangers of totalitarianism and mass surveillance.',
-      price: 11.99,
-      thumbnail: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRh6FZOl6eyomXYpro1-CMzBSKVn5i-GXlo05c0zzJZXe3yocdi0BWoykAk&s=10',
-      category: 'English Novel',
-    ),
-    Product(
-      id: 7,
-      title: 'Hujan',
-      description: 'Novel tentang persahabatan, cinta, dan perpisahan berlatar masa depan ketika bumi mengalami bencana alam mematikan.',
-      price: 13.00,
-      // Menggunakan server OpenLibrary (Database buku gratis)
-      thumbnail: 'https://covers.openlibrary.org/b/isbn/9786020324784-L.jpg',
-      category: 'Novel Indonesia',
-    ),
-    Product(
-      id: 8,
-      title: 'Atomic Habits',
-      description: 'An easy and proven way to build good habits and break bad ones. Practical strategies for daily improvement.',
-      price: 18.50,
-      thumbnail: 'https://covers.openlibrary.org/b/isbn/9780735211292-L.jpg',
-      category: 'English Self-Help',
+      title: 'Velg Racing Palang 5',
+      brand: 'Vrossi',
+      description: 'Velg racing alumunium alloy yang ringan dan kuat. Meningkatkan kestabilan saat manuver.',
+      price: 110.00,
+      thumbnail: 'https://hsrwheel.com/wp-content/uploads/2025/08/BOROKO-TJH-HSR-R16X7-H5X1143-ET42-SANDY-BRONZE-KANAN.jpg',
+      category: 'Kaki-kaki & Roda',
     ),
   ];
 
   Future<List<Product>> getProducts() async {
-    await Future.delayed(const Duration(seconds: 1));
-    return _mockBooks;
+    await Future.delayed(const Duration(milliseconds: 500));
+    return _mockParts;
   }
 
   Future<List<Product>> searchProducts(String query) async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    return _mockBooks.where((book) => 
-        book.title.toLowerCase().contains(query.toLowerCase()) || 
-        book.category.toLowerCase().contains(query.toLowerCase())
-    ).toList();
+    await Future.delayed(const Duration(milliseconds: 300));
+    if (query.isEmpty) return _mockParts;
+    final lowerQuery = query.toLowerCase();
+    return _mockParts.where((part) {
+      return part.title.toLowerCase().contains(lowerQuery) ||
+             part.category.toLowerCase().contains(lowerQuery) ||
+             part.brand.toLowerCase().contains(lowerQuery);
+    }).toList();
   }
 }
